@@ -16,14 +16,13 @@ show_animation = True
 
 
 class Bot:
-    def __init__(self, init_pose=None, target_pos=None, runtime=20.):
+    def __init__(self, init_pose=None, target_pos=None, runtime=10.):
         self.init_pose = init_pose
         self.runtime = runtime
         self.target_pos = target_pos
 
         # simulation parameters
-        self.kp = 3
-        self.kw = 1.5
+        self.kp = 1
         self.dt = 0.01
         self.x_bound = 20
         self.y_bound = 20
@@ -32,7 +31,7 @@ class Bot:
 
     def reset(self):
         self.time = 0.0
-        self.pose = np.array(([0.0, 0.0, 0.0])) if self.init_pose is None else np.copy(self.init_pose)
+        self.pose = np.array(([0.0, 0.0, 0.0, 0.0, 0.0])) if self.init_pose is None else np.copy(self.init_pose)
         self.done = False
 
     def move_to_pose(self, action, x_obs, y_obs):
@@ -52,12 +51,11 @@ class Bot:
 
         x_diff = x_goal - x
         y_diff = y_goal - y
-
         rho = np.hypot(x_diff, y_diff)
 
-        v = self.kp*action[0]
-        w = self.kw*action[1]
-        theta = theta + (w * self.dt)
+        v = self.kp
+
+        theta = theta + (action[0] * self.dt)
         x = x + (v * np.cos(theta) * self.dt)
         y = y + (v * np.sin(theta) * self.dt)
 
@@ -70,16 +68,19 @@ class Bot:
                 self.done = True
                 return self.done
 
-        self.pose = np.array([x, y, theta, v, w])
         self.time += self.dt
 
-        if x > self.x_bound or x < -10:
-            self.done = True
-            return self.done
+        if x > self.x_bound:
+            x = self.x_bound
+        elif x < 0:
+            x = 0
 
-        if y > self.y_bound or y < -10:
-            self.done = True
-            return self.done
+        if y > self.y_bound:
+            y = self.y_bound
+        elif y < 0:
+            y = 0
+
+        self.pose = np.array([x, y, theta])
 
         if self.time > self.runtime or rho < 0.35:
             self.done = True

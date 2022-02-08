@@ -7,7 +7,11 @@ from Get_Pose import Bot
 class Task():
     """Task (environment) that defines the goal and provides feedback to the agent."""
 
+<<<<<<< HEAD
     def __init__(self, init_pose=None, runtime=20., target_pos=None):
+=======
+    def __init__(self, init_pose=None, runtime=10., target_pos=None):
+>>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
         """Initialize a Task object.
         Params
         ======
@@ -19,8 +23,13 @@ class Task():
         """
         # Simulation
         self.sim = Bot(init_pose, target_pos, runtime)
+<<<<<<< HEAD
         self.state_size = 5
         self.action_size = 2
+=======
+        self.state_size = 3
+        self.action_size = 1
+>>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
 
         #self.action_low = -1
         #self.action_high = 1
@@ -34,7 +43,11 @@ class Task():
         self.diff = 0.0
         self.d = 0
 
+<<<<<<< HEAD
         self.estep = -0.4
+=======
+        self.estep = -0.5
+>>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
 
     def get_reward(self, reward, pose):
         """Uses current pose of sim to return reward."""
@@ -45,16 +58,20 @@ class Task():
         dist_x = self.target_pos[0] - pose[0]
         dist_y = self.target_pos[1] - pose[1]
 
+<<<<<<< HEAD
         # bonus
         self.diff = np.hypot(dist_x, dist_y)
         if self.diff < 0.35:
             bonus = 100
 
         # obstacle penalty
+=======
+>>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
         x_obs = abs(self.sim.pose[0] - self.x)
         y_obs = abs(self.sim.pose[1] - self.y)
         d_ob = np.hypot(x_obs, y_obs)
 
+<<<<<<< HEAD
         for i in range(len(d_ob)):
             if d_ob[i] < 0.35:
                 penalty_obs = -10
@@ -62,6 +79,21 @@ class Task():
         # calculate reward
         reward += self.estep + penalty_obs + bonus - (1.5 * (self.diff - self.d))
         self.d = self.diff
+=======
+        # bonus
+        self.diff = np.hypot(dist_x, dist_y)
+
+        if d_ob.any() < 0.35:
+            reward = -40
+        elif self.diff < 0.35:
+            reward = 20
+        else:
+            reward = self.estep
+
+        # 1.8*(self.d-self.diff)
+        # self.d = self.diff
+
+>>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
         return reward
 
     def step(self, state, action):
