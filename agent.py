@@ -90,38 +90,21 @@ class DDPG():
 
         # Replay memory
         self.buffer_size = 1000000
-<<<<<<< HEAD
-        self.batch_size = 64
-        self.memory = ReplayBuffer(self.buffer_size, self.batch_size)
-
-        # Algorithm parameters
-        self.gamma = 0.99  # discount factor
-=======
         self.batch_size = 128
         self.memory = ReplayBuffer(self.buffer_size, self.batch_size)
 
         # Algorithm parameters
-        self.gamma = 0.2  # discount factor
->>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
+        self.gamma = 0.7  # discount factor
         self.tau = 0.001  # for soft update of target parameters
 
     def reset_episode(self):
         self.noise.reset()
         state = self.task.reset()
-<<<<<<< HEAD
-        self.last_state = state
-        return state
-
-    def step(self, action, reward, next_state, done):
-        # Save experience / reward
-        self.memory.add(self.last_state, action, reward, next_state, done)
-=======
         return state
 
     def step(self, last_state, action, reward, next_state, done):
         # Save experience / reward
         self.memory.add(last_state, action, reward, next_state, done)
->>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
 
         # Learn, if enough samples are available in memory
         if len(self.memory) > self.batch_size:

@@ -36,14 +36,7 @@ class Actor:
         net = layers.Dense(units=512, activation='relu')(net)
 
         # Add final output layer with sigmoid activation
-<<<<<<< HEAD
-        action1 = layers.Dense(units=1, activation='sigmoid')(net)
-        action2 = layers.Dense(units=1, activation='tanh')(net)
-
-        actions = layers.Concatenate()([action1, action2])
-=======
         action = layers.Dense(units=1, activation='sigmoid')(net)
->>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
 
         #raw_actions = layers.Dense(units=self.action_size, activation='sigmoid', name='raw_actions')(net)
 
@@ -51,19 +44,11 @@ class Actor:
         #actions = layers.Lambda(lambda x: (x * self.action_range) + self.action_low, name='actions')(raw_actions)
 
         # Create Keras model
-<<<<<<< HEAD
-        self.model = models.Model(inputs=states, outputs=actions)
-
-        # Define loss function using action value (Q value) gradients
-        action_gradients = layers.Input(shape=(self.action_size,))
-        loss = K.mean(-action_gradients * actions)
-=======
         self.model = models.Model(inputs=states, outputs=action)
 
         # Define loss function using action value (Q value) gradients
         action_gradients = layers.Input(shape=(self.action_size,))
         loss = K.mean(-action_gradients * action)
->>>>>>> 5eaa11d6eeafa6811feb9ffc30fda1c5353ebcae
 
         # Define optimizer and training function
         optimizer = optimizers.Adam(lr=0.001)
