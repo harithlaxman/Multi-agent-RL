@@ -29,7 +29,7 @@ class Critic:
         # Add hidden layer(s) for state pathway
         #net_states = layers.Dense(units=32, activation='relu')(states)
         #net_states = layers.Dense(units=64, activation='relu')(net_states)
-        net_states = layers.Dense(units=512, activation='relu')(states)
+        net_states = layers.Dense(units=128, activation='relu')(states)
 
         # Add hidden layer(s) for action pathway
         #net_actions = layers.Dense(units=32, activation='relu')(actions)
@@ -40,11 +40,11 @@ class Critic:
         concat = layers.Concatenate()([net_states, actions])
 
         #net = layers.Multiply()([net_states, net_actions])
-        net = layers.Dense(512, activation="relu")(concat)
-        net = layers.Dense(512, activation="relu")(net)
+        net = layers.Dense(256, activation="relu")(concat)
+        net = layers.Dense(128, activation="relu")(net)
 
         # Add final output layer to produce action values (Q values)
-        Q_values = layers.Dense(units=1, activation="linear", name='q_values')(net)
+        Q_values = layers.Dense(units=1, name='q_values')(net)
 
         # Create Keras model
         self.model = models.Model(inputs=[states, actions], outputs=Q_values)

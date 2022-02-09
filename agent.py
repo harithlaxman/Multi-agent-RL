@@ -29,7 +29,7 @@ class ReplayBuffer:
         e = self.experience(state, action, reward, next_state, done)
         self.memory.append(e)
 
-    def sample(self, batch_size=64):
+    def sample(self, batch_size=512):
         """Randomly sample a batch of experiences from memory."""
         return random.sample(self.memory, k=self.batch_size)
 
@@ -90,7 +90,7 @@ class DDPG():
 
         # Replay memory
         self.buffer_size = 1000000
-        self.batch_size = 128
+        self.batch_size = 512
         self.memory = ReplayBuffer(self.buffer_size, self.batch_size)
 
         # Algorithm parameters
